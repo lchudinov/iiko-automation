@@ -48,7 +48,7 @@ $rowCount = $excelData.count
 # Create a form
 $form = New-Object System.Windows.Forms.Form
 $form.TopMost = $true
-$form.Text = "Ввод накладной"
+$form.Text = "Ввод накладнных из файла $($excelFilePath)"
 $form.Size = New-Object System.Drawing.Size(500,350)
 
 # Create a ComboBox
