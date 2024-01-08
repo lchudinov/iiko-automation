@@ -22,13 +22,16 @@ $excelData = Import-Excel -Path $excelFilePath -WorksheetName $worksheetName
 # }
 
 $nameCol = @($excelData[0].PSObject.Properties)[0].Name
-$nameCol
+"Навание колонки: $($nameCol)"
+
+$rowCount = $excelData.count
+"Число строк: $($rowCount)"
 
 # Create a form
 $form = New-Object System.Windows.Forms.Form
 $form.TopMost = $true
 $form.Text = "Ввод накладной"
-$form.Size = New-Object System.Drawing.Size(400,200)
+$form.Size = New-Object System.Drawing.Size(500,350)
 
 # Create a ComboBox
 $comboBox = New-Object System.Windows.Forms.ComboBox
@@ -40,6 +43,8 @@ foreach ($item in $excelData) {
     $null = $comboBox.Items.Add($item.$nameCol)
 }
 
+$currentItemIndex = 0 
+
 # Create a Label
 $label = New-Object System.Windows.Forms.Label
 $label.Location = New-Object System.Drawing.Point(10,70)
@@ -49,29 +54,59 @@ $valuesLabel = New-Object System.Windows.Forms.Label
 $valuesLabel.Location = New-Object System.Drawing.Point(10,110)
 $valuesLabel.Size = New-Object System.Drawing.Size(400,20)
 
+$forwardButton = New-Object System.Windows.Forms.Button
+$forwardButton.Text = "Следующий"
+$forwardButton.Location = New-Object System.Drawing.Point(350,150)
+$forwardButton.Size = New-Object System.Drawing.Size(100,30)
+
+$backwardButton = New-Object System.Windows.Forms.Button
+$backwardButton.Text = "Предыдущий"
+$backwardButton.Location = New-Object System.Drawing.Point(10,150)
+$backwardButton.Size = New-Object System.Drawing.Size(100,30)
+
 # Add ComboBox and Label to the form
 $form.Controls.Add($comboBox)
 $form.Controls.Add($label)
 $form.Controls.Add($valuesLabel)
+$form.Controls.Add($forwardButton)
+$form.Controls.Add($backwardButton)
 
-
-
-# Add an event handler for ComboBox selection change
-$comboBox.Add_SelectedIndexChanged({
-  $selectedItem = $comboBox.SelectedItem
-  $selectedIndex = $comboBox.FindStringExact($selectedItem);
-  $selectedObject = $excelData | Where-Object { $_.$nameCol -eq $selectedItem }
-  $label.Text = "$($selectedIndex): $($selectedObject.$nameCol)" # -replace "`r`n|`r|`n", " "
+function selectByIndex($selectedIndex) {
+  if ($selectedIndex -lt 0) {
+    return
+  }
+  if ($selectedIndex -ge $rowCount) {
+    return
+  }
+  $global:currentItemIndex = $selectedIndex
+  $comboBox.SelectedIndex = $selectedIndex
+  $selectedObject = $excelData[$selectedIndex]
+  $label.Text = "$($selectedIndex + 1): $($selectedObject.$nameCol)" # -replace "`r`n|`r|`n", " "
   $count = @($selectedObject.PSObject.Properties).count;
   $values = @($selectedObject.PSObject.Properties)[1..$count] | ForEach-Object {$_.Value}
   for ($i = 0; $i -lt $values.Count; $i++) {
-    if ($values[$i] -eq $null) {
+    if ($null -eq $values[$i]) {
         $values[$i] = 0
     }
   }
   $valuesWithTabs = $values -join "`t"
   $valuesLabel.Text = $values
   $valuesWithTabs | Set-Clipboard
+}
+
+
+# Add an event handler for ComboBox selection change
+$comboBox.Add_SelectedIndexChanged({
+  $selectedIndex = $comboBox.SelectedIndex;
+  selectByIndex $selectedIndex
+})
+
+$forwardButton.Add_Click({
+  selectByIndex($global:currentItemIndex + 1)
+})
+
+$backwardButton.Add_Click({
+  selectByIndex($global:currentItemIndex - 1)
 })
 
 function inputNumbers () {
@@ -94,6 +129,8 @@ function inputNumbers () {
       Start-Sleep -Milliseconds 100
   }
 }
+
+selectByIndex 0
 
 # Show the form
 $form.ShowDialog()
