@@ -21,6 +21,17 @@ $excelData = Import-Excel -Path $excelFilePath -WorksheetName $worksheetName
 #     $node = $node | Select-Object @{Name='Название'; Expression={$_.'Интервал'}}
 # }
 
+function getValues($selectedObject) {
+  $count = @($selectedObject.PSObject.Properties).count;
+  $values = @($selectedObject.PSObject.Properties)[1..$count] | ForEach-Object {$_.Value}
+  for ($i = 0; $i -lt $values.Count; $i++) {
+    if ($null -eq $values[$i]) {
+        $values[$i] = 0
+    }
+  }
+  return $values
+}
+
 $nameCol = @($excelData[0].PSObject.Properties)[0].Name
 "Навание колонки: $($nameCol)"
 
@@ -82,13 +93,14 @@ function selectByIndex($selectedIndex) {
   $comboBox.SelectedIndex = $selectedIndex
   $selectedObject = $excelData[$selectedIndex]
   $label.Text = "$($selectedIndex + 1): $($selectedObject.$nameCol)" # -replace "`r`n|`r|`n", " "
+  $values = getValues($selectedObject)
   $count = @($selectedObject.PSObject.Properties).count;
-  $values = @($selectedObject.PSObject.Properties)[1..$count] | ForEach-Object {$_.Value}
-  for ($i = 0; $i -lt $values.Count; $i++) {
-    if ($null -eq $values[$i]) {
-        $values[$i] = 0
-    }
-  }
+  # $values = @($selectedObject.PSObject.Properties)[1..$count] | ForEach-Object {$_.Value}
+  # for ($i = 0; $i -lt $values.Count; $i++) {
+  #   if ($null -eq $values[$i]) {
+  #       $values[$i] = 0
+  #   }
+  # }
   $valuesWithTabs = $values -join "`t"
   $valuesLabel.Text = $values
   $valuesWithTabs | Set-Clipboard
