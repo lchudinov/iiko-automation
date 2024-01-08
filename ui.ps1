@@ -117,8 +117,10 @@ function inputNumbers () {
       # Output the current number (you can replace this with your desired action)
       Write-Host "Processing number: $number"
   
-      # Send down arrow key press using SendKeys
-      [System.Windows.Forms.SendKeys]::SendWait("$($number)")
+      # Send number if not zero using SendKeys
+      if ($number -gt 0) {
+        [System.Windows.Forms.SendKeys]::SendWait("$($number)")
+      }
 
       # Send down arrow key press using SendKeys
       [System.Windows.Forms.SendKeys]::SendWait("{DOWN}")
