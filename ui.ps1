@@ -17,16 +17,7 @@ $worksheetName = "ЗАЯВКА"
 # $worksheetName = "ЧЕЛЯБИНСК"
 
 # Use Import-Excel to read the Excel file
-#$excelData = Import-Excel -Path $excelFilePath -WorksheetName $worksheetName -NoHeader 
 $excelData = Import-Excel -Path $excelFilePath -WorksheetName $worksheetName
-# $excelData
-# $excelData | ForEach-Object {"Item: [$PSItem]"}
-
-# foreach ( $node in $excelData )
-# {
-#     $node = $node | Select-Object @{Name='Название'; Expression={$_.'Интервал'}}
-# }
-
 
 function getValues($selectedObject) {
   $count = @($selectedObject.PSObject.Properties).count;
