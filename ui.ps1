@@ -103,12 +103,36 @@ function selectByIndex($selectedIndex) {
   $valuesWithTabs | Set-Clipboard
 }
 
-function inputNumbers () {
+function inputNumbersFromClipboard () {
   # Get data from clipboard
   $data = Get-Clipboard
   
   # Split the data into an array of numbers
   $numbers = $data -split "`t"
+  
+  # Start a loop to process each number
+  foreach ($number in $numbers) {
+      # Output the current number (you can replace this with your desired action)
+      Write-Host "Processing number: $number"
+  
+      # Send number if not zero using SendKeys
+      if ($number -gt 0) {
+        [System.Windows.Forms.SendKeys]::SendWait("$($number)")
+      }
+
+      # Send down arrow key press using SendKeys
+      [System.Windows.Forms.SendKeys]::SendWait("{DOWN}")
+  
+      # Sleep for a short duration to give time for the key press to take effect
+      Start-Sleep -Milliseconds 50
+  }
+}
+
+function inputNumbers () {
+  Write-Host "currentItemIndex $($global:currentItemIndex)"
+  $selectedObject = $excelData[$global:currentItemIndex]
+  $numbers = getValues($selectedObject)
+  Write-Host "numbers $($numbers)"
   
   # Start a loop to process each number
   foreach ($number in $numbers) {
