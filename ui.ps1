@@ -74,6 +74,27 @@ $comboBox.Add_SelectedIndexChanged({
   $valuesWithTabs | Set-Clipboard
 })
 
+function inputNumbers () {
+  # Get data from clipboard
+  $data = Get-Clipboard -Format Text
+  
+  # Split the data into an array of numbers
+  $numbers = $data -split "`t"
+  
+  # Start a loop to process each number
+  foreach ($number in $numbers) {
+      # Output the current number (you can replace this with your desired action)
+      Write-Host "Processing number: $number"
+  
+      # Send down arrow key press using SendKeys
+      Add-Type -AssemblyName System.Windows.Forms
+      [System.Windows.Forms.SendKeys]::SendWait("{DOWN}")
+  
+      # Sleep for a short duration to give time for the key press to take effect
+      Start-Sleep -Milliseconds 100
+  }
+}
+
 # Show the form
 $form.ShowDialog()
 
