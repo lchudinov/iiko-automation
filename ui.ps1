@@ -1,9 +1,15 @@
 Import-Module ImportExcel
 Add-Type -AssemblyName System.Windows.Forms
 
+function getCurrentExcelFile {
+  $tomorrowDate = (Get-Date).AddDays(1)
+  $formattedDate = "{0:d.MM}" -f $tomorrowDate
+  return "$($formattedDate).xlsx"
+}
 
 # Specify the path to your Excel file
-$excelFilePath = "7.01.xlsx"
+$excelFilePath = getCurrentExcelFile # "7.01.xlsx"
+$excelFilePath
 $worksheetName = "ТЮМЕНЬ"
 $worksheetName = "ЗАЯВКА"
 # $worksheetName = "РЦ"
@@ -20,6 +26,7 @@ $excelData = Import-Excel -Path $excelFilePath -WorksheetName $worksheetName
 # {
 #     $node = $node | Select-Object @{Name='Название'; Expression={$_.'Интервал'}}
 # }
+
 
 function getValues($selectedObject) {
   $count = @($selectedObject.PSObject.Properties).count;
