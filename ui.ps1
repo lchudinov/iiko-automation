@@ -75,12 +75,18 @@ $backwardButton.Text = "Предыдущий"
 $backwardButton.Location = New-Object System.Drawing.Point(10,150)
 $backwardButton.Size = New-Object System.Drawing.Size(100,30)
 
+$inputButton = New-Object System.Windows.Forms.Button
+$inputButton.Text = "Ввести количество"
+$inputButton.Location = New-Object System.Drawing.Point(150,150)
+$inputButton.Size = New-Object System.Drawing.Size(100,40)
+
 # Add ComboBox and Label to the form
 $form.Controls.Add($comboBox)
 $form.Controls.Add($label)
 $form.Controls.Add($valuesLabel)
 $form.Controls.Add($forwardButton)
 $form.Controls.Add($backwardButton)
+$form.Controls.Add($inputButton)
 
 function selectByIndex($selectedIndex) {
   if ($selectedIndex -lt 0) {
@@ -99,6 +105,29 @@ function selectByIndex($selectedIndex) {
   $valuesWithTabs | Set-Clipboard
 }
 
+function inputNumbers () {
+  # Get data from clipboard
+  $data = Get-Clipboard
+  
+  # Split the data into an array of numbers
+  $numbers = $data -split "`t"
+  
+  # Start a loop to process each number
+  foreach ($number in $numbers) {
+      # Output the current number (you can replace this with your desired action)
+      Write-Host "Processing number: $number"
+  
+      # Send down arrow key press using SendKeys
+      [System.Windows.Forms.SendKeys]::SendWait("$($number)")
+
+      # Send down arrow key press using SendKeys
+      [System.Windows.Forms.SendKeys]::SendWait("{DOWN}")
+  
+      # Sleep for a short duration to give time for the key press to take effect
+      Start-Sleep -Milliseconds 50
+  }
+}
+
 
 # Add an event handler for ComboBox selection change
 $comboBox.Add_SelectedIndexChanged({
@@ -113,27 +142,10 @@ $forwardButton.Add_Click({
 $backwardButton.Add_Click({
   selectByIndex($global:currentItemIndex - 1)
 })
-
-function inputNumbers () {
-  # Get data from clipboard
-  $data = Get-Clipboard -Format Text
-  
-  # Split the data into an array of numbers
-  $numbers = $data -split "`t"
-  
-  # Start a loop to process each number
-  foreach ($number in $numbers) {
-      # Output the current number (you can replace this with your desired action)
-      Write-Host "Processing number: $number"
-  
-      # Send down arrow key press using SendKeys
-      Add-Type -AssemblyName System.Windows.Forms
-      [System.Windows.Forms.SendKeys]::SendWait("{DOWN}")
-  
-      # Sleep for a short duration to give time for the key press to take effect
-      Start-Sleep -Milliseconds 100
-  }
-}
+$inputButton.Add_Click({
+  Start-Sleep 3
+  inputNumbers
+})
 
 selectByIndex 0
 
