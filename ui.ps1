@@ -70,7 +70,7 @@ $label.Size = New-Object System.Drawing.Size(250,40)
 
 $valuesLabel = New-Object System.Windows.Forms.Label
 $valuesLabel.Location = New-Object System.Drawing.Point(10,110)
-$valuesLabel.Size = New-Object System.Drawing.Size(400,20)
+$valuesLabel.Size = New-Object System.Drawing.Size(1000,20)
 
 $forwardButton = New-Object System.Windows.Forms.Button
 $forwardButton.Text = "Следующий"
@@ -108,7 +108,7 @@ function selectByIndex($selectedIndex) {
   $label.Text = "$($selectedIndex + 1): $($selectedObject.$nameCol)" # -replace "`r`n|`r|`n", " "
   $values = getValues($selectedObject)
   $valuesWithTabs = $values -join "`t"
-  $valuesLabel.Text = $values
+  $valuesLabel.Text = $values -join " - "
   $valuesWithTabs | Set-Clipboard
 }
 
