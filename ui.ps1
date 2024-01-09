@@ -8,7 +8,7 @@ function getCurrentExcelFile {
 }
 
 # Specify the path to your Excel file
-$excelFilePath = getCurrentExcelFile # "7.01.xlsx"
+$excelFilePath = "11.01.xlsx"
 $excelFilePath
 # $worksheetName = "ТЮМЕНЬ"
 $worksheetName = "ЗАЯВКА"
@@ -32,6 +32,8 @@ function getValues($selectedObject) {
 
 $nameCol = @($excelData[0].PSObject.Properties)[0].Name
 "Навание колонки: $($nameCol)"
+
+$excelData = $excelData | Where-Object { $_.$nameCol -ne $null }
 
 $rowCount = $excelData.count
 "Число строк: $($rowCount)"
