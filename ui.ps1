@@ -33,7 +33,13 @@ function getValues($selectedObject) {
 $nameCol = @($excelData[0].PSObject.Properties)[0].Name
 "Навание колонки: $($nameCol)"
 
+$countBefore = $excelData.count
 $excelData = $excelData | Where-Object { $_.$nameCol -ne $null }
+$countAfter = $excelData.count
+
+if ($countAfter -ne $countBefore) {
+  Write-Host "Отфильтровано $($countBefore - $countAfter) строк с пустым именем"
+}
 
 $rowCount = $excelData.count
 "Число строк: $($rowCount)"
