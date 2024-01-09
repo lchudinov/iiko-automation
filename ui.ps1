@@ -36,11 +36,14 @@ $nameCol = @($excelData[0].PSObject.Properties)[0].Name
 $rowCount = $excelData.count
 "Число строк: $($rowCount)"
 
+$productCount = @($excelData[0].PSObject.Properties).count - 1
+"Число продуктов: $($productCount)"
+
 # Create a form
 $form = New-Object System.Windows.Forms.Form
 $form.TopMost = $true
-$form.Text = "Ввод накладнных из файла $($excelFilePath)"
-$form.Size = New-Object System.Drawing.Size(500,350)
+$form.Text = "Ввод накладнных из файла $($excelFilePath), количество продуктов: $($productCount)"
+$form.Size = New-Object System.Drawing.Size(700,350)
 
 # Create a ComboBox
 $comboBox = New-Object System.Windows.Forms.ComboBox
