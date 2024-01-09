@@ -10,7 +10,7 @@ function getCurrentExcelFile {
 # Specify the path to your Excel file
 $excelFilePath = getCurrentExcelFile # "7.01.xlsx"
 $excelFilePath
-$worksheetName = "ТЮМЕНЬ"
+# $worksheetName = "ТЮМЕНЬ"
 $worksheetName = "ЗАЯВКА"
 # $worksheetName = "РЦ"
 # $worksheetName = "РЦ1"
