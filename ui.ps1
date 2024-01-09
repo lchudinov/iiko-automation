@@ -98,9 +98,10 @@ function selectByIndex($selectedIndex) {
   $selectedObject = $excelData[$selectedIndex]
   $label.Text = "$($selectedIndex + 1): $($selectedObject.$nameCol)" # -replace "`r`n|`r|`n", " "
   $values = getValues($selectedObject)
-  $valuesWithTabs = $values -join "`t"
   $valuesLabel.Text = $values -join " - "
-  $valuesWithTabs | Set-Clipboard
+  # Copy to clipboard
+  # $valuesWithTabs = $values -join "`t"
+  # $valuesWithTabs | Set-Clipboard
 }
 
 function inputNumbersFromClipboard () {
