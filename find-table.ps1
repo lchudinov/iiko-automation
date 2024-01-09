@@ -1,5 +1,17 @@
 Add-Type -AssemblyName UIAutomationClient
 Add-Type -AssemblyName UIAutomationTypes
+
+Add-Type @"
+    using System;
+    using System.Runtime.InteropServices;
+
+    public class User32 {
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool SetForegroundWindow(IntPtr hWnd);
+    }
+"@
+
 # $calc = [Diagnostics.Process]::Start('calc')
 #wait for the UI to appear
 # $null = $calc.WaitForInputIdle(5000)
@@ -12,6 +24,9 @@ $condition = New-Object Windows.Automation.PropertyCondition([Windows.Automation
 $iikoUI = $root.FindFirst([Windows.Automation.TreeScope]::Children, $condition)
 
 Write-Output $iikoUI
+
+# $hwnd = $iikoUI.Current.NativeWindowHandle
+# [User32]::SetForegroundWindow($hwnd)
 
 # $window = $iikoUI.GetCurrentPattern([Windows.Automation.WindowPattern]::Pattern)
 # $window.SetWindowVisualState([System.Windows.Automation.WindowVisualState]::Normal)
@@ -33,9 +48,10 @@ if ($null -eq $panel) {
 }
 Write-Host "panel is" $panel.Current.Name $panel.Current.ClassName
 
-function FindGrid(){
+function FindGrid($panel){
 	Start-Sleep -s 2
-	$condition1 = New-Object Windows.Automation.PropertyCondition([Windows.Automation.AutomationElement]::ClassNameProperty, "WindowsForms10.Window.8.app.0.35e60a0_r6_ad1")
+	# $condition1 = New-Object Windows.Automation.PropertyCondition([Windows.Automation.AutomationElement]::ClassNameProperty, "WindowsForms10.Window.8.app.0.35e60a0_r6_ad1")
+	$condition1 = New-Object Windows.Automation.PropertyCondition([Windows.Automation.AutomationElement]::AutomationIdProperty, "gridInvoice")
 	# $condition2 = New-Object Windows.Automation.PropertyCondition([Windows.Automation.AutomationElement]::NameProperty, "таблицу")
 	# $condition2 = New-Object Windows.Automation.PropertyCondition([Windows.Automation.AutomationElement]::AutomationIdProperty, "gridInvoice")
 	# $condition2 = New-Object Windows.Automation.PropertyCondition([Windows.Automation.AutomationElement]::AutomationIdProperty, "gridInvoice")
@@ -72,7 +88,7 @@ function FindCell(){
 	# $grid.GetCurrentPattern([Windows.Automation.GridPattern]::Pattern).Invoke()
 }
 
-$grid = FindGrid
+$grid = FindGrid $panel
 
 $grid.Current | Get-Member
 Write-Host "grid is " $grid.Current.Name $grid.Current.ClassName
