@@ -16,6 +16,8 @@ $worksheetName = "ТЮМЕНЬ"
 # $worksheetName = "РЦ1"
 # $worksheetName = "ЧЕЛЯБИНСК"
 
+$date = "110124 0830"
+
 # Use Import-Excel to read the Excel file
 $excelData = Import-Excel -Path $excelFilePath -WorksheetName $worksheetName
 
@@ -89,6 +91,11 @@ $inputButton.Text = "Ввести количество"
 $inputButton.Location = New-Object System.Drawing.Point(150,150)
 $inputButton.Size = New-Object System.Drawing.Size(100,40)
 
+$inputAllButton = New-Object System.Windows.Forms.Button
+$inputAllButton.Text = "Ввести количество с датой"
+$inputAllButton.Location = New-Object System.Drawing.Point(150,200)
+$inputAllButton.Size = New-Object System.Drawing.Size(100,50)
+
 # Add ComboBox and Label to the form
 $form.Controls.Add($comboBox)
 $form.Controls.Add($label)
@@ -96,6 +103,7 @@ $form.Controls.Add($valuesLabel)
 $form.Controls.Add($forwardButton)
 $form.Controls.Add($backwardButton)
 $form.Controls.Add($inputButton)
+$form.Controls.Add($inputAllButton)
 
 function selectByIndex($selectedIndex) {
   if ($selectedIndex -lt 0) {
@@ -140,6 +148,16 @@ function inputNumbersFromClipboard () {
   }
 }
 
+function inputDate() {
+  Write-Host "Воодим дату $($date)"
+  [System.Windows.Forms.SendKeys]::SendWait("$($date)")
+}
+
+function goToTable() {
+  Write-Host "Переходим к таблице"
+  [System.Windows.Forms.SendKeys]::SendWait("{TAB 10}")
+}
+
 function inputNumbers () {
   Write-Host "currentItemIndex $($global:currentItemIndex)"
   $selectedObject = $excelData[$global:currentItemIndex]
@@ -180,6 +198,13 @@ $backwardButton.Add_Click({
 })
 $inputButton.Add_Click({
   Start-Sleep 3
+  inputNumbers
+})
+
+$inputAllButton.Add_Click({
+  Start-Sleep 3
+  inputDate
+  goToTable
   inputNumbers
 })
 
