@@ -48,23 +48,23 @@ if ($null -eq $panel) {
 }
 Write-Host "panel is" $panel.Current.Name $panel.Current.ClassName
 
-function FindGrid($panel){
+function FindDateField($panel){
 	Start-Sleep -s 2
 	# $condition1 = New-Object Windows.Automation.PropertyCondition([Windows.Automation.AutomationElement]::ClassNameProperty, "WindowsForms10.Window.8.app.0.35e60a0_r6_ad1")
-	$condition1 = New-Object Windows.Automation.PropertyCondition([Windows.Automation.AutomationElement]::AutomationIdProperty, "gridInvoice")
-	# $condition2 = New-Object Windows.Automation.PropertyCondition([Windows.Automation.AutomationElement]::NameProperty, "таблицу")
+	# $condition1 = New-Object Windows.Automation.PropertyCondition([Windows.Automation.AutomationElement]::AutomationIdProperty, "labelDateIncoming")
+	$condition1 = New-Object Windows.Automation.PropertyCondition([Windows.Automation.AutomationElement]::NameProperty, "Дата и время выдачи товара:")
 	# $condition2 = New-Object Windows.Automation.PropertyCondition([Windows.Automation.AutomationElement]::AutomationIdProperty, "gridInvoice")
 	# $condition2 = New-Object Windows.Automation.PropertyCondition([Windows.Automation.AutomationElement]::AutomationIdProperty, "gridInvoice")
 	# $condition = New-Object Windows.Automation.AndCondition($condition1, $condition2)
-	$grid = $panel.FindFirst([Windows.Automation.TreeScope]::Descendants, $condition1)
+	$dateField = $iikoUI.FindFirst([Windows.Automation.TreeScope]::Descendants, $condition1)
 	# $gridPattern = $grid.GetCurrentPattern([Windows.Automation.GridPattern]::Pattern)
-	if ($null -ne $grid) {
-		Write-Host "grid found" $grid
+	if ($null -ne $dateField) {
+		Write-Host "date field found" $grid
 	} else {
-		Write-Host "grid not found"
+		Write-Host "date field not found"
 		exit
 	}
-	return $grid
+	return $dateField
 	# $button.GetCurrentPattern([Windows.Automation.InvokePattern]::Pattern).Invoke()
 	# $grid.GetCurrentPattern([Windows.Automation.GridPattern]::Pattern).Invoke()
 }
@@ -88,13 +88,12 @@ function FindCell(){
 	# $grid.GetCurrentPattern([Windows.Automation.GridPattern]::Pattern).Invoke()
 }
 
-$grid = FindGrid $panel
+$dateField = FindDateField $panel
 
-$grid.Current | Get-Member
-Write-Host "grid is " $grid.Current.Name $grid.Current.ClassName
+Write-Host "dateField is $($dateField.Current.Name) $($dateField.Current.ClassName)"
+exit
 $cell = FindCell
 
-exit
 
 #get and click the buttons for the calculation
 
