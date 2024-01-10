@@ -91,10 +91,10 @@ $inputButton.Text = "Ввести количество"
 $inputButton.Location = New-Object System.Drawing.Point(150,150)
 $inputButton.Size = New-Object System.Drawing.Size(100,40)
 
-$inputAllButton = New-Object System.Windows.Forms.Button
-$inputAllButton.Text = "Ввести количество с датой"
-$inputAllButton.Location = New-Object System.Drawing.Point(150,200)
-$inputAllButton.Size = New-Object System.Drawing.Size(100,50)
+$inputWithDateButton = New-Object System.Windows.Forms.Button
+$inputWithDateButton.Text = "Ввести количество с датой"
+$inputWithDateButton.Location = New-Object System.Drawing.Point(150,200)
+$inputWithDateButton.Size = New-Object System.Drawing.Size(100,50)
 
 # Add ComboBox and Label to the form
 $form.Controls.Add($comboBox)
@@ -103,7 +103,7 @@ $form.Controls.Add($valuesLabel)
 $form.Controls.Add($forwardButton)
 $form.Controls.Add($backwardButton)
 $form.Controls.Add($inputButton)
-$form.Controls.Add($inputAllButton)
+$form.Controls.Add($inputWithDateButton)
 
 function selectByIndex($selectedIndex) {
   if ($selectedIndex -lt 0) {
@@ -201,7 +201,7 @@ $inputButton.Add_Click({
   inputNumbers
 })
 
-$inputAllButton.Add_Click({
+$inputWithDateButton.Add_Click({
   Start-Sleep 3
   inputDate
   goToTable
