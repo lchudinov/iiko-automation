@@ -10,8 +10,8 @@ function getCurrentExcelFile {
 # Specify the path to your Excel file
 $excelFilePath = "11.01.xlsx"
 $excelFilePath
-# $worksheetName = "ТЮМЕНЬ"
-$worksheetName = "ЗАЯВКА"
+$worksheetName = "ТЮМЕНЬ"
+# $worksheetName = "ЗАЯВКА"
 # $worksheetName = "РЦ"
 # $worksheetName = "РЦ1"
 # $worksheetName = "ЧЕЛЯБИНСК"
@@ -50,7 +50,7 @@ $productCount = @($excelData[0].PSObject.Properties).count - 1
 # Create a form
 $form = New-Object System.Windows.Forms.Form
 $form.TopMost = $true
-$form.Text = "Ввод накладнных из файла $($excelFilePath), количество продуктов: $($productCount)"
+$form.Text = "Ввод накладнных из файла $($excelFilePath), $($worksheetName), количество продуктов: $($productCount)"
 $form.Size = New-Object System.Drawing.Size(700,350)
 
 # Create a ComboBox
