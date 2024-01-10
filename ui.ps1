@@ -93,8 +93,13 @@ $inputButton.Size = New-Object System.Drawing.Size(100,40)
 
 $inputWithDateButton = New-Object System.Windows.Forms.Button
 $inputWithDateButton.Text = "Ввести количество с датой"
-$inputWithDateButton.Location = New-Object System.Drawing.Point(150,200)
+$inputWithDateButton.Location = New-Object System.Drawing.Point(150,250)
 $inputWithDateButton.Size = New-Object System.Drawing.Size(100,50)
+
+$inputHeader = New-Object System.Windows.Forms.Button
+$inputHeader.Text = "Ввести дату и поставщика"
+$inputHeader.Location = New-Object System.Drawing.Point(150,200)
+$inputHeader.Size = New-Object System.Drawing.Size(100,50)
 
 # Add ComboBox and Label to the form
 $form.Controls.Add($comboBox)
@@ -103,7 +108,8 @@ $form.Controls.Add($valuesLabel)
 $form.Controls.Add($forwardButton)
 $form.Controls.Add($backwardButton)
 $form.Controls.Add($inputButton)
-$form.Controls.Add($inputWithDateButton)
+$form.Controls.Add($inputHeader)
+# $form.Controls.Add($inputWithDateButton)
 
 function selectByIndex($selectedIndex) {
   if ($selectedIndex -lt 0) {
@@ -153,9 +159,41 @@ function inputDate() {
   [System.Windows.Forms.SendKeys]::SendWait("$($date)")
 }
 
-function goToTable() {
-  Write-Host "Переходим к таблице"
+function goToTableFromDate() {
+  Write-Host "Переходим к таблице от даты"
   [System.Windows.Forms.SendKeys]::SendWait("{TAB 10}")
+}
+
+function goToTableFromName() {
+  Write-Host "Переходим к таблице от имени"
+  [System.Windows.Forms.SendKeys]::SendWait("{TAB 9}")
+}
+
+function goToName() {
+  Write-Host "Переходим к поставщику от даты"
+  [System.Windows.Forms.SendKeys]::SendWait("{TAB}")
+}
+
+function getAddressfromName {
+  param (
+    [string]$name
+  )
+  $address = $name
+  $address = $address -replace "БОЛЬШОЙ ФОРМАТ", ""
+  $address = $address -replace "МИНИ ФОРМАТ", ""
+  $address = $address -replace "ЖМ", ""
+  $address = $address -replace "Тюмень", ""
+  $address = $address -replace "Челябинск", ""
+  $address = $address -replace ",", ""
+  return $address.Trim()
+}
+
+function inputName() {
+  $selectedObject = $excelData[$global:currentItemIndex]
+  $name = $selectedObject.$nameCol
+  $address = getAddressfromName $name
+  Write-Host "вводим имя $($name), номер $($global:currentItemIndex), адрес $($address)"
+  [System.Windows.Forms.SendKeys]::SendWait("{DELETE}$($address){ENTER}")
 }
 
 function inputNumbers () {
@@ -204,8 +242,17 @@ $inputButton.Add_Click({
 $inputWithDateButton.Add_Click({
   Start-Sleep 3
   inputDate
-  goToTable
+  goToTableFromDate
   inputNumbers
+})
+
+$inputHeader.Add_Click({
+  Start-Sleep 3
+  inputDate
+  goToName
+  inputName
+  #goToTableFromName
+  #inputNumbers
 })
 
 selectByIndex 0
