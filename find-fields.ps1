@@ -44,7 +44,7 @@ Start-Sleep -s 2
 # }
 # Write-Host "panel is" $panel.Current.Name $panel.Current.ClassName
 
-function FindDateField($panel){
+function FindMainPropertiesPanel() {
 	Start-Sleep -s 2
 	# $condition1 = New-Object Windows.Automation.PropertyCondition([Windows.Automation.AutomationElement]::ClassNameProperty, "WindowsForms10.Window.8.app.0.35e60a0_r6_ad1")
 	# $condition1 = New-Object Windows.Automation.PropertyCondition([Windows.Automation.AutomationElement]::AutomationIdProperty, "dateEditIncomingDateTime")
@@ -52,21 +52,22 @@ function FindDateField($panel){
 	# $condition2 = New-Object Windows.Automation.PropertyCondition([Windows.Automation.AutomationElement]::AutomationIdProperty, "gridInvoice")
 	# $condition2 = New-Object Windows.Automation.PropertyCondition([Windows.Automation.AutomationElement]::AutomationIdProperty, "gridInvoice")
 	# $condition = New-Object Windows.Automation.AndCondition($condition1, $condition2)
-	$dateField = $iikoUI.FindFirst([Windows.Automation.TreeScope]::Descendants, $condition1)
+	$mainPropertiesPanel = $iikoUI.FindFirst([Windows.Automation.TreeScope]::Descendants, $condition1)
 	# $gridPattern = $grid.GetCurrentPattern([Windows.Automation.GridPattern]::Pattern)
-	if ($null -ne $dateField) {
-		Write-Host "date field found" $grid
+	if ($null -ne $mainPropertiesPanel) {
+		Write-Host "main properties panel found" $grid
 	} else {
-		Write-Host "date field not found"
+		Write-Host "main properties panel not found"
 		exit
 	}
-	return $dateField
+	return $mainPropertiesPanel
 	# $button.GetCurrentPattern([Windows.Automation.InvokePattern]::Pattern).Invoke()
 	# $grid.GetCurrentPattern([Windows.Automation.GridPattern]::Pattern).Invoke()
 }
 
-$dateField = FindDateField $panel
-Write-Host "dateField is $($dateField.Current.Name) $($dateField.Current.ClassName)"
+$mainPropertiesPanel = FindMainPropertiesPanel $panel
+Write-Host "mainPropertiesPanel is $($mainPropertiesPanel.Current.Name) $($mainPropertiesPanel.Current.ClassName)"
 
-$dateField.SetFocus()
-Start-Sleep -s 2
+if ($null -eq $mainPropertiesPanel) {
+	exit
+}
