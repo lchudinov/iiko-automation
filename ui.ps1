@@ -8,7 +8,7 @@ function getCurrentExcelFile {
 }
 
 # Specify the path to your Excel file
-$excelFilePath = "11.01.xlsx"
+$excelFilePath = "15.01.xlsx"
 $excelFilePath
 $worksheetName = "ТЮМЕНЬ"
 # $worksheetName = "ЗАЯВКА"
@@ -16,7 +16,7 @@ $worksheetName = "ТЮМЕНЬ"
 # $worksheetName = "РЦ1"
 # $worksheetName = "ЧЕЛЯБИНСК"
 
-$date = "110124 0830"
+$date = "150124 0830"
 
 # Use Import-Excel to read the Excel file
 $excelData = Import-Excel -Path $excelFilePath -WorksheetName $worksheetName
