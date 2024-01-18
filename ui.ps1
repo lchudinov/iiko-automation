@@ -15,8 +15,8 @@ $worksheetName = "ТЮМЕНЬ"
 # $worksheetName = "РЦ"
 # $worksheetName = "РЦ1"
 # $worksheetName = "ЧЕЛЯБИНСК"
-
-$date = "160124 0830"
+  
+$date = "190124 0830"
 
 # Use Import-Excel to read the Excel file
 $excelData = Import-Excel -Path $excelFilePath -WorksheetName $worksheetName
