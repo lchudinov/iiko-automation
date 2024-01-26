@@ -7,6 +7,12 @@ function getCurrentExcelFile {
   return "$($formattedDate).xlsx"
 }
 
+function getTommorowtDateForInput {
+  $tomorrowDate = (Get-Date).AddDays(1)
+  $formattedDate = "{0:ddMM} 0830" -f $tomorrowDate
+  return $formattedDate
+}
+
 # Specify the path to your Excel file
 $excelFilePath = getCurrentExcelFile # "20.01.xlsx"
 $excelFilePath
@@ -16,7 +22,7 @@ $worksheetName = "ТЮМЕНЬ"
 # $worksheetName = "РЦ1"
 # $worksheetName = "ЧЕЛЯБИНСК"
   
-$date = "230124 0830"
+$date = getTommorowtDateForInput
 
 # Use Import-Excel to read the Excel file
 $excelData = Import-Excel -Path $excelFilePath -WorksheetName $worksheetName
