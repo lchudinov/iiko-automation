@@ -213,7 +213,10 @@ function inputName() {
 }
 
 function inputConception() {
-  $conception = "Лаборатория Вкуса ЕКБ"
+  $conception = "КО{+}"
+  if ($global:worksheetName -eq "ЗАЯВКА") {
+    $conception = "Лаборатория Вкуса ЕКБ"
+  }
   Write-Host "вводим концепцию $($conception)"
   [System.Windows.Forms.SendKeys]::SendWait("{DELETE}$($conception){ENTER}")
 }
