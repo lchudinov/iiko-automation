@@ -103,7 +103,7 @@ $inputWithDateButton.Location = New-Object System.Drawing.Point(150,250)
 $inputWithDateButton.Size = New-Object System.Drawing.Size(100,50)
 
 $inputHeader = New-Object System.Windows.Forms.Button
-$inputHeader.Text = "Ввести дату и поставщика"
+$inputHeader.Text = "Ввести шапку с даты"
 $inputHeader.Location = New-Object System.Drawing.Point(150,200)
 $inputHeader.Size = New-Object System.Drawing.Size(100,50)
 
@@ -180,6 +180,16 @@ function goToName() {
   [System.Windows.Forms.SendKeys]::SendWait("{TAB}")
 }
 
+function goToConception() {
+  Write-Host "Переходим к концепции от поставщика"
+  [System.Windows.Forms.SendKeys]::SendWait("{TAB}")
+}
+
+function goToStock() {
+  Write-Host "Переходим к складу от концепции"
+  [System.Windows.Forms.SendKeys]::SendWait("{TAB 2}")
+}
+
 function getAddressfromName {
   param (
     [string]$name
@@ -200,6 +210,21 @@ function inputName() {
   $address = getAddressfromName $name
   Write-Host "вводим имя $($name), номер $($global:currentItemIndex), адрес $($address)"
   [System.Windows.Forms.SendKeys]::SendWait("{DELETE}$($address){ENTER}")
+}
+
+function inputConception() {
+  $conception = "Лаборатория Вкуса ЕКБ"
+  Write-Host "вводим концепцию $($conception)"
+  [System.Windows.Forms.SendKeys]::SendWait("{DELETE}$($conception){ENTER}")
+}
+
+function inputStock() {
+  $stock = "Тюмень"
+  if ($global:worksheetName -eq "ЗАЯВКА") {
+    $stock = "Лаборатория Вкуса ЕКБ ((ЕКБ) Готовая продукция)"
+  }
+  Write-Host "вводим склад $($stock)"
+  [System.Windows.Forms.SendKeys]::SendWait("{DELETE}$($stock){ENTER}")
 }
 
 function inputNumbers () {
@@ -257,6 +282,10 @@ $inputHeader.Add_Click({
   inputDate
   goToName
   inputName
+  goToConception
+  inputConception
+  goToStock
+  inputStock
   #goToTableFromName
   #inputNumbers
 })
