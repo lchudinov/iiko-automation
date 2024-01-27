@@ -17,7 +17,7 @@ function getTommorowtDateForInput {
 $excelFilePath = getCurrentExcelFile # "20.01.xlsx"
 $excelFilePath
 $worksheetName = "ТЮМЕНЬ"
-# $worksheetName = "ЗАЯВКА"
+$worksheetName = "ЗАЯВКА"
 # $worksheetName = "РЦ"
 # $worksheetName = "РЦ1"
 # $worksheetName = "ЧЕЛЯБИНСК"
@@ -217,6 +217,7 @@ function inputConception() {
   if ($global:worksheetName -eq "ЗАЯВКА") {
     $conception = "Лаборатория Вкуса ЕКБ"
   }
+  $conception = "Лаборатория Вкуса ЕКБ"
   Write-Host "вводим концепцию $($conception)"
   [System.Windows.Forms.SendKeys]::SendWait("{DELETE}$($conception){ENTER}")
 }
@@ -224,8 +225,9 @@ function inputConception() {
 function inputStock() {
   $stock = "Тюмень"
   if ($global:worksheetName -eq "ЗАЯВКА") {
-    $stock = "Лаборатория Вкуса ЕКБ ((ЕКБ) Готовая продукция)"
+    $stock = "лаб екб готовая"
   }
+  $stock = "лаб екб готовая"
   Write-Host "вводим склад $($stock)"
   [System.Windows.Forms.SendKeys]::SendWait("{DELETE}$($stock){ENTER}")
 }
