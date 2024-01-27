@@ -213,21 +213,13 @@ function inputName() {
 }
 
 function inputConception() {
-  $conception = "КО{+}"
-  if ($global:worksheetName -eq "ЗАЯВКА") {
-    $conception = "Лаборатория Вкуса ЕКБ"
-  }
-  $conception = "Лаборатория Вкуса ЕКБ"
+  $conception = if ($worksheetName -eq "ЗАЯВКА") { "Лаборатория Вкуса ЕКБ" } else {"КО{+}"}
   Write-Host "вводим концепцию $($conception)"
   [System.Windows.Forms.SendKeys]::SendWait("{DELETE}$($conception){ENTER}")
 }
 
 function inputStock() {
-  $stock = "Тюмень"
-  if ($global:worksheetName -eq "ЗАЯВКА") {
-    $stock = "лаб екб готовая"
-  }
-  $stock = "лаб екб готовая"
+  $stock = if ($worksheetName -eq "ЗАЯВКА") { "лаб екб готовая" } else {"Тюмень"}
   Write-Host "вводим склад $($stock)"
   [System.Windows.Forms.SendKeys]::SendWait("{DELETE}$($stock){ENTER}")
 }
