@@ -16,8 +16,8 @@ function getTommorowtDateForInput {
 # Specify the path to your Excel file
 $excelFilePath = getCurrentExcelFile # "20.01.xlsx"
 $excelFilePath
-$worksheetName = "ТЮМЕНЬ"
-# $worksheetName = "ЗАЯВКА"
+# $worksheetName = "ТЮМЕНЬ"
+$worksheetName = "ЗАЯВКА"
 # $worksheetName = "РЦ"
 # $worksheetName = "РЦ1"
 # $worksheetName = "ЧЕЛЯБИНСК"
